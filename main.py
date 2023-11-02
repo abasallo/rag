@@ -21,17 +21,17 @@ OPENAI_CHAT_MODEL = os.getenv('OPENAI_CHAT_MODEL')
 
 
 def main():
-    json = load_json_file(JSON_FILE_PATH)
+    data = load_json_file(file_path=JSON_FILE_PATH)
 
     db = ChromaDatabase(db_name=VECTOR_DATABASE_NAME,
                         embeddings=OpenAIEmbeddings(model=OPENAI_EMBEDDING_MODEL),
-                        documents=ChromaDocument.extract_fields(json))
+                        documents=ChromaDocument.extract_fields(data))
 
     open_ai = OpenAI(model=OPENAI_CHAT_MODEL)
 
     query = input("\nRAG query for the LLM?:\n\n")
 
-    similar_docs = db.find_similar_docs(query, 2)
+    similar_docs = db.find_similar_docs(query, k=2)
     ChromaDatabase.log(similar_docs)
 
     answer = open_ai.rag_query(query, similar_docs)
