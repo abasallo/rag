@@ -19,9 +19,9 @@ class ChromaDatabase:
 
     def find_similar_docs(self, query, k, score=None):
         if score:
-            return self.db.similarity_search_with_score(query, k=k)
+            return self.db.similarity_search_with_score(query, k)
         else:
-            return self.db.similarity_search(query, k=k)
+            return self.db.similarity_search(query, k)
 
     @staticmethod
     def log(docs: List[ChromaDocument]):
